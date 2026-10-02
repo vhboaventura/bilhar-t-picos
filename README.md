@@ -15,7 +15,11 @@ entre a reta do taco e as bolas de uma mesa de bilhar 2D:
 
 ## Integrantes
 
-_(preencher: nomes e e-mails do grupo, 2–3 pessoas)_
+| Nome | Matrícula |
+|------|-----------|
+| Thiago Dutra Rodrigues Paixão | 2020.1.00765-11 |
+| Guilherme Alves Freire | 2023.1.00512-11 |
+| Victor Hugo Boaventura Pinheiro Alves | 2017.1.02795-11 |
 
 ## O problema
 
