@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Taco × bolas — ponto de contato em tempo real</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="app">
+  <section class="stage">
+    <canvas id="table" aria-label="Mesa de bilhar 2D"></canvas>
+    <p class="hint">
+      Arraste na mesa para mirar: o clique define a ponta do taco e o mouse a direção.
+      Círculo ciano = alvo do T2 · amarelo = trajetória da bola atingida.
+      Aumente o número de bolas para ver o ganho do T2 sobre o T1 crescer.
+    </p>
+    <div id="offline" class="offline" hidden>Sem resposta do servidor Julia — verifique se <code>scripts/run_server.jl</code> está rodando.</div>
+  </section>
+
+  <aside class="panel">
+    <header>
+      <h1>Taco × bolas</h1>
+      <p class="sub">ponto de contato em tempo real · algoritmos 1 e 2</p>
+    </header>
+
+    <section>
+      <h2>Algoritmo 2 · preditor + corretor</h2>
+      <label class="field">
+        <span>Preditor</span>
+        <select id="predictor">
+          <option value="euler">Preditor de 1ª ordem (Euler na EDO)</option>
+          <option value="order0">Preditor de ordem 0</option>
+        </select>
+      </label>
+      <div class="slider">
+        <label for="newton">Máx. iterações de Newton</label><output id="newton_o">10</output>
+        <input type="range" id="newton" min="0" max="10" step="1" value="10">
+      </div>
+      <div class="slider">
+        <label for="reanchor">Reancorar a cada N frames (0 = nunca)</label><output id="reanchor_o">30</output>
+        <input type="range" id="reanchor" min="0" max="120" step="5" value="30">
+      </div>
+    </section>
+
+    <section>
+      <h2>Mesa</h2>
+      <div class="slider">
+        <label for="nballs">Número de bolas</label><output id="nballs_o">15</output>
+        <input type="range" id="nballs" min="1" max="300" step="1" value="15">
+      </div>
+      <div class="slider">
+        <label for="radius">Raio das bolas</label><output id="radius_o">6.0</output>
+        <input type="range" id="radius" min="2" max="9" step="0.5" value="6">
+      </div>
+      <label class="switch"><input type="checkbox" id="paused"><i></i>Pausar bolas</label>
+      <label class="switch"><input type="checkbox" id="auto" checked><i></i>Taco automático (ou arraste na mesa)</label>
+      <label class="switch"><input type="checkbox" id="showT1" checked><i></i>Mostrar T1 (força bruta) para comparar</label>
+      <button id="shuffle" type="button">Embaralhar bolas</button>
+    </section>
+
+    <section>
+      <h2>Medidas</h2>
+      <dl class="stats">
+        <dt>T1 · força bruta</dt><dd id="s_t1">—</dd>
+        <dt>T2 · rastreio</dt><dd id="s_t2">—</dd>
+        <dt>Speedup T1/T2</dt><dd id="s_speed">—</dd>
+        <dt>Erro em s vs. T1</dt><dd id="s_err">—</dd>
+        <dt>Newton por frame</dt><dd id="s_newton">—</dd>
+        <dt>Frames em força bruta</dt><dd id="s_bf">—</dd>
+        <dt>Alvo do T2</dt><dd id="s_target">—</dd>
+      </dl>
+      <div class="chart"><span>erro de T2 em relação a T1</span><canvas id="errc"></canvas></div>
+      <div class="chart"><span>tempo por frame (µs)</span><canvas id="timec"></canvas></div>
+      <ul class="legend">
+        <li><b class="x">✕</b> T1 · força bruta</li>
+        <li><b class="ring"></b> T2 · rastreado</li>
+        <li><b class="tri">▲</b> reancoragem (força bruta)</li>
+        <li><b class="dot"></b> T2 em bola errada</li>
+      </ul>
+    </section>
+  </aside>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
